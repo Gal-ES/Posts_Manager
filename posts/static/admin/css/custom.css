@@ -1,0 +1,50 @@
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.action-buttons .button {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: white;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.action-buttons .button:hover {
+    opacity: 0.9;
+}
+
+/* Стили для кнопок */
+.action-buttons .button.view {
+    background-color: #417690;
+}
+
+.action-buttons .button.edit {
+    background-color: #79aec8;
+}
+
+.action-buttons .button.delete {
+    background-color: #ba2121;
+}
+
+/* Анимация при наведении */
+.action-buttons .button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Адаптивность */
+@media screen and (max-width: 768px) {
+    .action-buttons {
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .action-buttons .button {
+        width: 100%;
+        text-align: center;
+    }
+}

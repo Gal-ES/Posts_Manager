@@ -1,0 +1,125 @@
+{% load i18n %}
+
+<div class="admin-filter-dropdown-container">
+    <h3 class="filter-title" onclick="toggleFilter(this)">
+        {% blocktranslate with filter_title=title %}By {{ filter_title }}{% endblocktranslate %}
+        <span class="arrow">▼</span>
+    </h3>
+    <ul class="admin-filter-dropdown" style="display: none;">
+        {% for choice in choices %}
+            <li{% if choice.selected %} class="selected"{% endif %}>
+                <a href="{{ choice.query_string|iriencode }}" class="filter-link">
+                    {{ choice.display }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<style>
+.admin-filter-dropdown-container {
+    margin-bottom: 20px;
+}
+
+.filter-title {
+    cursor: pointer;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: #333;
+    transition: background-color 0.2s;
+}
+
+.filter-title:hover {
+    background: #e9ecef;
+}
+
+.arrow {
+    font-size: 12px;
+    transition: transform 0.2s;
+}
+
+.filter-title.active .arrow {
+    transform: rotate(180deg);
+}
+
+.admin-filter-dropdown {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 1000;
+}
+
+.admin-filter-dropdown li {
+    padding: 0;
+    margin: 0;
+}
+
+.admin-filter-dropdown li a {
+    display: block;
+    padding: 8px 12px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.admin-filter-dropdown li a:hover {
+    background-color: #f5f5f5;
+}
+
+.admin-filter-dropdown li.selected a {
+    background-color: #79aec8;
+    color: #fff;
+}
+
+.admin-filter-dropdown li:last-child a {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+</style>
+
+<script>
+function toggleFilter(element) {
+    const dropdown = element.nextElementSibling;
+    const isVisible = dropdown.style.display !== 'none';
+
+    // Закрываем все другие открытые фильтры
+    document.querySelectorAll('.admin-filter-dropdown').forEach(d => {
+        if (d !== dropdown) {
+            d.style.display = 'none';
+            d.previousElementSibling.classList.remove('active');
+        }
+    });
+
+    // Переключаем текущий фильтр
+    dropdown.style.display = isVisible ? 'none' : 'block';
+    element.classList.toggle('active');
+}
+
+// Закрываем выпадающее меню при клике вне его
+document.addEventListener('click', function(event) {
+    const containers = document.querySelectorAll('.admin-filter-dropdown-container');
+    containers.forEach(container => {
+        if (!container.contains(event.target)) {
+            const dropdown = container.querySelector('.admin-filter-dropdown');
+            const title = container.querySelector('.filter-title');
+            if (dropdown && dropdown.style.display !== 'none') {
+                dropdown.style.display = 'none';
+                title.classList.remove('active');
+            }
+        }
+    });
+});
+</script>
